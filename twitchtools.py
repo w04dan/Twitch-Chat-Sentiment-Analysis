@@ -34,5 +34,11 @@ class TwitchTools():
             follow_list.append(follow['to_id'])
         return follow_list
 
-tools = TwitchTools('credentials.json')
-print(tools.get_following(tools.id_from_login('wdn314')))
+    def get_followers(self, id):
+        follower_list = []
+        request_headers = {'Authorization': 'Bearer ' + self.tokens['access_token'], 'Client-Id': self.tokens['client_id']}
+        followers = requests.get('https://api.twitch.tv/helix/users/follows', params={'to_id': id}, headers=request_headers).json()
+        for follower in followers['data']:
+            follower_list.append(followers['from_id'])
+        return follower_list
+
